@@ -18,25 +18,20 @@ const part1 = (rawInput: string) => {
   return input.reduce((t, line) => t + getFirstAndLastDigits(line), 0);
 };
 
-const reverseStr = (str: string) => str.split('').reverse().join('');
-
 const digits = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
-const reverseDigits = digits.map(reverseStr);
+const spelledDigitRegex = new RegExp(`(?=([0-9]|${digits.join('|')}))`, `g`);
 
-const spelledDigitRegex = new RegExp(`([0-9]|${digits.join('|')})`);
-const reverseSpelledDigitRegex = new RegExp(`([0-9]|${reverseDigits.join('|')})`);
+const getDigitOrWord = (digit: string) => digits.indexOf(digit) > -1 ? digits.indexOf(digit) : Number(digit);
 
 const getFirstAndLastSpelledDigits = (input: string) => {
-  const reverseInput = reverseStr(input);
-  const matches = input.match(spelledDigitRegex);
-  const reverseMatches = reverseInput.match(reverseSpelledDigitRegex);
-  if (!matches || !reverseMatches) return 0;
+  const matches = input.matchAll(spelledDigitRegex);
+  const matchesArray = Array.from(matches, m => m[1]);
+  if (!matchesArray.length) return 0;
 
-  const [first] = matches;
-  const [last] = reverseMatches;
-
-  const firstDigit = Number(digits.indexOf(first) !== -1 ? digits.indexOf(first) : first);
-  const lastDigit = Number(reverseDigits.indexOf(last) !== -1 ? reverseDigits.indexOf(last) : last);
+  const first = matchesArray[0];
+  const last = matchesArray[matchesArray.length - 1];
+  const firstDigit = getDigitOrWord(first);
+  const lastDigit = getDigitOrWord(last);
 
   return Number(`${firstDigit}${lastDigit}`);
 }
@@ -97,5 +92,5 @@ run({
     solution: part2,
   },
   trimTestInputs: true,
-  onlyTests: false,
+  onlyTests: true,
 });
