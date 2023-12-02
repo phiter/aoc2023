@@ -1,45 +1,39 @@
 import run from "aocrunner";
-const trim = (str: string) => str.trim();
 
-const parseInput = (rawInput: string) => rawInput.split("\n").map(trim);
-const limits = {
-  red: 12,
-  green: 13,
-  blue: 14
-};
+const parseInput = (rawInput: string) => rawInput.split("\n");
+
+const RED_LIMIT = 12;
+const GREEN_LIMIT = 13;
+const BLUE_LIMIT = 14;
 
 const getPullData = (pull: string) => {
   return {
-    green: Number(pull.match(`([0-9]+) green`)?.[1] ?? 0),
-    red: Number(pull.match(`([0-9]+) red`)?.[1] ?? 0),
-    blue: Number(pull.match(`([0-9]+) blue`)?.[1] ?? 0),
+    green: [...pull.match(new RegExp(`[0-9]+ (?=green)`, 'g')) ?? []].map(Number),
+    red: [...pull.match(new RegExp(`[0-9]+ (?=red)`, 'g')) ?? []].map(Number),
+    blue: [...pull.match(new RegExp(`[0-9]+ (?=blue)`, 'g')) ?? []].map(Number),
   }
 }
 
-const gameIdRegex = new RegExp('Game ([0-9]+):');
 const getRowMaxData = (row: string) => {
-  const gameIdMatcher = row.match(gameIdRegex);
-  const gameId = gameIdMatcher?.[1];
-  if (!gameId) return;
-  const rowData = row.replace(gameIdRegex, '');
-  const pulls = rowData.split(`;`).map(trim);
-  const pullDatas = pulls.map(getPullData);
-  const maxGreens = Math.max(...pullDatas.map(d => d.green));
-  const maxReds = Math.max(...pullDatas.map(d => d.red));
-  const maxBlues = Math.max(...pullDatas.map(d => d.blue));
+  const gameId = Number(row.match('[0-9]+')?.[0] ?? 0);
+  const pullData = getPullData(row);
 
-  return { gameId: Number(gameId), maxBlues, maxReds, maxGreens };
+  const maxGreens = Math.max(...pullData.green);
+  const maxReds = Math.max(...pullData.red);
+  const maxBlues = Math.max(...pullData.blue);
+
+  return { gameId, maxBlues, maxReds, maxGreens };
 };
 
 const part1 = (rawInput: string) => {
   const input = parseInput(rawInput);
   const rows = input.map(getRowMaxData);
-  let gameIdSums = 0;
-  rows.forEach(row => {
-    if (!row) return;
-    if (row.maxBlues > limits.blue || row.maxReds > limits.red || row.maxGreens > limits.green) return;
-    gameIdSums += row.gameId;
-  })
+  const gameIdSums = rows.reduce((t, row) => {
+    if (row.maxBlues > BLUE_LIMIT || row.maxReds > RED_LIMIT || row.maxGreens > GREEN_LIMIT) return t;
+
+    return t + row.gameId;
+  }, 0);
+
   return gameIdSums;
 };
 
@@ -47,13 +41,12 @@ const part2 = (rawInput: string) => {
   const input = parseInput(rawInput);
   const rows = input.map(getRowMaxData);
   const rowPowers = rows.map((row) => {
-    if (!row) return 0;
-
     return (row.maxBlues || 1) * (row.maxGreens || 1) * (row.maxReds || 1);
   });
-  const sum = rowPowers.reduce((t, r) => t + r, 0);
 
-  return sum;
+  const rowSums = rowPowers.reduce((t, r) => t + r, 0);
+
+  return rowSums;
 };
 
 run({
