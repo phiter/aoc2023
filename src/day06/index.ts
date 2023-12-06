@@ -22,16 +22,16 @@ const getRaceWins = (raceTime: number, raceDistance: number) => {
 
 const part1 = (rawInput: string) => {
   const input = parseInput(rawInput);
-  const raceTimes = [...input[0].match(/\d+/g)?.values()!].map(Number);
-  const raceDistances = [...input[1].match(/\d+/g)?.values()!].map(Number);
+  const raceTimes = input[0].match(/\d+/g)!.map(Number);
+  const raceDistances = input[1].match(/\d+/g)!.map(Number);
 
   return raceTimes.reduce((acc, _, index) => acc * getRaceWins(raceTimes[index], raceDistances[index]), 1);
 };
 
 const part2 = (rawInput: string) => {
   const input = parseInput(rawInput);
-  const raceTime = Number([...input[0].match(/\d+/g)?.values()!].join(''));
-  const raceDistance = Number([...input[1].match(/\d+/g)?.values()!].join(''));
+  const raceTime = Number(input[0].match(/\d+/g)!.join(''));
+  const raceDistance = Number(input[1].match(/\d+/g)!.join(''));
   return getRaceWins(raceTime, raceDistance);
 };
 
