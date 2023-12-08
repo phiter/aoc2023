@@ -4,13 +4,15 @@ const parseInput = (rawInput: string) => rawInput.split('\n');
 
 const solve = (instructions: number[], lines: Record<string, [string, string]>, point: string, isTarget: (v: string) => boolean) => {
   let steps = 0;
-  while (point = lines[point][instructions[steps++ % instructions.length]!]) {
-    if (isTarget(point)) {
-      break;
-    }
-  }
+  /**
+   * Not very good to read, but I wanted to test the limits of Javascript here.
+   * Will stop when it found the target. Instead of resetting the steps, I just
+   * used the modulo operator to make a virtual reset without needing a second counter.
+   */
+  while (!isTarget(point = lines[point][instructions[steps++ % instructions.length]!])) { }
   return steps;
 }
+
 const parseLines = (lines: string[]): Record<string, [string, string]> => {
   return lines.reduce((ac, l) => {
     const matches = l.match(/\w+/g)!;
@@ -33,7 +35,8 @@ const part1 = (rawInput: string) => {
 
   const initial = "AAA";
   const target = "ZZZ";
-  return solve(instructions, mappedLines, initial, t => t === target);
+
+  return solve(instructions, mappedLines, initial, t => t === target)!;
 };
 
 const part2 = (rawInput: string) => {
@@ -42,8 +45,8 @@ const part2 = (rawInput: string) => {
   const lines = input.slice(2, input.length);
   const mappedLines = parseLines(lines);
   const startingPoints = Object.keys(mappedLines).filter(l => l[2] === "A");
-  const solves = startingPoints.map(point => solve(instructions, mappedLines, point, t => t[2] === "Z"));
-  solves.sort((a, b) => a - b);
+  const solves = startingPoints.map(point => solve(instructions, mappedLines, point, t => t[2] === "Z")!);
+
   return solves.reduce(leastCommonMultiple);
 };
 
