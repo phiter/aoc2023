@@ -24,8 +24,6 @@ const parseHand = (line: string, withJoker = false): Hand => {
     if (jokerIndex > -1 && map.length > 1) {
       if (jokerIndex === 0) {
         map[1][1] += map[0][1];
-        // Swap J and biggest card positions
-        [map[0][0], map[1][0]] = [map[1][0], map[0][0]];
       } else {
         map[0][1] += map[jokerIndex][1];
       }
