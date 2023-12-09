@@ -1,23 +1,17 @@
 import run from "aocrunner";
 
-const parseInput = (rawInput: string) => rawInput.split('\n');
+const parseInput = (rawInput: string) => rawInput.split('\n').map(h => h.split(' ').map(Number));
 
-const findNextDifference = (history: number[], backwards = false): number => {
-  const extracts = [[...history]];
-  for (let i = 0; extracts[extracts.length - 1].some(n => n !== 0); i++) {
-    extracts.push(extracts[i].reduce<number[]>((acc, crr, idx, arr) => idx === arr.length - 1 ? acc : [...acc, arr[idx + 1] - crr], []))
-  }
-  return extracts.reduceRight((acc, crr, idx) => idx === 0 ? acc : backwards ? crr[0] - acc : crr[crr.length - 1] + acc, 0);
-};
+const fn = (h: number[]): number => h.some(i => i !== 0) ? h[h.length - 1] + fn(h.reduce<number[]>((acc, crr, idx, arr) => idx === arr.length - 1 ? acc : [...acc, arr[idx + 1] - crr], [])) : 0;
 
 const part1 = (rawInput: string) => {
-  const histories = parseInput(rawInput).map(h => h.split(' ').map(Number));
-  return histories.reduce((acc, h) => acc + h[h.length - 1] + findNextDifference(h), 0);
+  const histories = parseInput(rawInput);
+  return histories.reduce((acc, h) => acc + fn(h), 0);
 };
 
 const part2 = (rawInput: string) => {
-  const histories = parseInput(rawInput).map(h => h.split(' ').map(Number));
-  return histories.reduce((acc, h) => acc + h[0] - findNextDifference(h, true), 0);
+  const histories = parseInput(rawInput);
+  return histories.reduce((acc, h) => acc + fn(h.reverse()), 0);
 };
 
 const input = `
