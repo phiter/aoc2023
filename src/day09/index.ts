@@ -2,47 +2,22 @@ import run from "aocrunner";
 
 const parseInput = (rawInput: string) => rawInput.split('\n');
 
-const findExtracts = (history: number[]): number[][] => {
+const findNextDifference = (history: number[], backwards = false): number => {
   const extracts = [[...history]];
   for (let i = 0; extracts[extracts.length - 1].some(n => n !== 0); i++) {
     extracts.push(extracts[i].reduce<number[]>((acc, crr, idx, arr) => idx === arr.length - 1 ? acc : [...acc, arr[idx + 1] - crr], []))
   }
-  return extracts;
-}
-
-const findNextDifference = (extracts: number[][], backwards = false): number => {
-  let lastDifference = 0;
-  for (let i = extracts.length - 1; i > 0; i--) {
-    const nextExtract = extracts[i - 1];
-    if (!nextExtract) break;
-    const extract = extracts[i];
-    lastDifference = backwards ?
-      extract[0] - lastDifference :
-      extract[extract.length - 1] + lastDifference;
-  }
-  return lastDifference;
+  return extracts.reduceRight((acc, crr, idx) => idx === 0 ? acc : backwards ? crr[0] - acc : crr[crr.length - 1] + acc, 0);
 };
 
 const part1 = (rawInput: string) => {
   const histories = parseInput(rawInput).map(h => h.split(' ').map(Number));
-  let total = 0;
-  for (let history of histories) {
-    const nextDifference = findNextDifference(findExtracts(history));
-    const nextNumber = history[history.length - 1] + nextDifference;
-    total += nextNumber;
-  }
-  return total;
+  return histories.reduce((acc, h) => acc + h[h.length - 1] + findNextDifference(h), 0);
 };
 
 const part2 = (rawInput: string) => {
   const histories = parseInput(rawInput).map(h => h.split(' ').map(Number));
-  let total = 0;
-  for (let history of histories) {
-    const nextDifference = findNextDifference(findExtracts(history), /* backwards */ true);
-    const nextNumber = history[0] - nextDifference;
-    total += nextNumber;
-  }
-  return total;
+  return histories.reduce((acc, h) => acc + h[0] - findNextDifference(h, true), 0);
 };
 
 const input = `
