@@ -2,7 +2,7 @@ import run from "aocrunner";
 
 const parseInput = (rawInput: string) => rawInput.split('\n').map(h => h.split(' ').map(Number));
 
-const fn = (h: number[]): number => h.some(i => i !== 0) ? h[h.length - 1] + fn(h.reduce<number[]>((acc, crr, idx, arr) => idx === arr.length - 1 ? acc : [...acc, arr[idx + 1] - crr], [])) : 0;
+const fn = (h: number[], c = 0): number => h.some(i => i !== h[0]) ? (c = h.pop()!) + fn(h.reduce<number[]>((acc, crr, idx) => [...acc, (h[idx + 1] ?? c) - crr], [])) : h[0];
 
 const part1 = (rawInput: string) => {
   const histories = parseInput(rawInput);
