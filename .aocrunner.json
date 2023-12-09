@@ -112,7 +112,7 @@
         "time": 56.290084
       },
       "part2": {
-        "solved": false,
+        "solved": true,
         "result": "11283670395017",
         "attempts": [
           "913793"
