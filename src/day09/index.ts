@@ -1,4 +1,5 @@
 import run from "aocrunner";
+import { sum, sumBy } from "lodash-es";
 
 const parseInput = (rawInput: string) => rawInput.split('\n').map(h => h.split(' ').map(Number));
 
@@ -6,12 +7,12 @@ const fn = (h: number[], c = 0): number => h.some(i => i !== h[0]) ? (c = h.pop(
 
 const part1 = (rawInput: string) => {
   const histories = parseInput(rawInput);
-  return histories.reduce((acc, h) => acc + fn(h), 0);
+  return sumBy(histories, fn);
 };
 
 const part2 = (rawInput: string) => {
   const histories = parseInput(rawInput);
-  return histories.reduce((acc, h) => acc + fn(h.reverse()), 0);
+  return sumBy(histories, h => fn(h.reverse()));
 };
 
 const input = `

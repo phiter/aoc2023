@@ -1,4 +1,5 @@
 import run from "aocrunner";
+import { sumBy } from "lodash-es";
 
 const parseInput = (rawInput: string) => rawInput.split('\n');
 
@@ -40,7 +41,6 @@ const parseHand = (line: string, withJoker = false): Hand => {
   }
 };
 
-
 type Entry = [string, number];
 
 const mapHandCards = (cards: string[]) => {
@@ -78,10 +78,9 @@ const part1 = (rawInput: string) => {
   const hands = input.map(l => parseHand(l));
   const sorted = hands.sort(sortHands);
   let acc = 0;
-  for (const handIndex in sorted) {
-    const index = Number(handIndex);
-    const hand = sorted[handIndex];
-    acc += hand.bid * (index + 1);
+  for (let i = 0; i < sorted.length;i++) {
+    const hand = sorted[i];
+    acc += hand.bid * (i + 1);
   }
   return acc;
 };
@@ -91,10 +90,9 @@ const part2 = (rawInput: string) => {
   const hands = input.map((l) => parseHand(l, true));
   const sorted = hands.sort((a, b) => sortHands(a, b, true));
   let acc = 0;
-  for (const handIndex in sorted) {
-    const index = Number(handIndex);
-    const hand = sorted[handIndex];
-    acc += hand.bid * (index + 1);
+  for (let i = 0; i < sorted.length;i++) {
+    const hand = sorted[i];
+    acc += hand.bid * (i + 1);
   }
   return acc;
 };

@@ -1,22 +1,22 @@
 import run from "aocrunner";
 
-const parseInput = (rawInput: string) => rawInput.split('\n').map(l => l.trim());
+const parseInput = (rawInput: string) => rawInput.split('\n');
 
-const checkOverlap = (match1: RegExpMatchArray, match2: RegExpMatchArray) => {
+const symbolRegex = /[^.\dA-Za-z]/g;
+const numbersRegex = /\d+/g;
+
+const hasOverlap = (match1: RegExpMatchArray, match2: RegExpMatchArray) => {
   const startOverlap = match1.index! + 1 >= match2.index!;
   const endOverlap = match1.index! <= (match2.index! + match2[0].length);
 
   return startOverlap && endOverlap;
 }
 
-const symbolRegex = new RegExp('[^.\\dA-Za-z]', 'g');
-const numbersRegex = new RegExp('[0-9]+', 'g');
-
 const checkNeighbors = (match: RegExpMatchArray, neighbors: string[]) => {
   for (const neighbor of neighbors) {
     if (!neighbor) continue;
     const symbols = [...neighbor.matchAll(symbolRegex)];
-    if (symbols.some(symbol => checkOverlap(symbol, match))) {
+    if (symbols.some(symbol => hasOverlap(symbol, match))) {
       return true;
     };
   }
@@ -46,7 +46,7 @@ const getCogParts = (cog: RegExpMatchArray, neighbors: string[]) => {
     if (!neighbor) continue;
     const numbers = [...neighbor.matchAll(numbersRegex)];
     for (const number of numbers) {
-      if (checkOverlap(cog, number)) {
+      if (hasOverlap(cog, number)) {
         neighboringNumbers.push(Number(number[0]));
       }
     }
@@ -55,7 +55,8 @@ const getCogParts = (cog: RegExpMatchArray, neighbors: string[]) => {
   return neighboringNumbers;
 };
 
-const cogRegex = new RegExp('\\*', 'g');
+const cogRegex = /\*/g;
+
 const part2 = (rawInput: string) => {
   const lines = parseInput(rawInput);
   let total = 0;
@@ -74,6 +75,7 @@ const part2 = (rawInput: string) => {
 
   return total;
 };
+
 const input = `
 467..114..
 ...*......
@@ -86,6 +88,7 @@ const input = `
 ...$.*....
 .664.598..
 `;
+
 run({
   part1: {
     tests: [

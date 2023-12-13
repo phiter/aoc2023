@@ -1,52 +1,38 @@
 import run from "aocrunner";
+import { max, sum, sumBy } from "../utils/index.js";
 
-const parseInput = (rawInput: string) => rawInput.split("\n");
+const parseInput = (rawInput: string) => rawInput.split('\n');
 
 const RED_LIMIT = 12;
 const GREEN_LIMIT = 13;
 const BLUE_LIMIT = 14;
 
-const getPullData = (pull: string) => {
-  return {
-    green: [...pull.match(new RegExp(`[0-9]+ (?=green)`, 'g')) ?? []].map(Number),
-    red: [...pull.match(new RegExp(`[0-9]+ (?=red)`, 'g')) ?? []].map(Number),
-    blue: [...pull.match(new RegExp(`[0-9]+ (?=blue)`, 'g')) ?? []].map(Number),
-  }
-}
+const getColor = (pull: string, color: string) => pull.match(new RegExp(`[0-9]+ (?=${color})`, 'g'))?.map(Number) ?? [];
 
 const getRowMaxData = (row: string) => {
   const gameId = Number(row.match('[0-9]+')?.[0] ?? 0);
-  const pullData = getPullData(row);
 
-  const maxGreens = Math.max(...pullData.green);
-  const maxReds = Math.max(...pullData.red);
-  const maxBlues = Math.max(...pullData.blue);
+  const greens = max(getColor(row, 'green'))!;
+  const reds = max(getColor(row, 'red'))!;
+  const blues = max(getColor(row, 'blue'))!;
 
-  return { gameId, maxBlues, maxReds, maxGreens };
+  return { gameId, blues, reds, greens };
 };
 
 const part1 = (rawInput: string) => {
   const input = parseInput(rawInput);
   const rows = input.map(getRowMaxData);
-  const gameIdSums = rows.reduce((t, row) => {
-    if (row.maxBlues > BLUE_LIMIT || row.maxReds > RED_LIMIT || row.maxGreens > GREEN_LIMIT) return t;
 
-    return t + row.gameId;
-  }, 0);
-
-  return gameIdSums;
+  return sumBy(rows, row => row.blues > BLUE_LIMIT || row.reds > RED_LIMIT || row.greens > GREEN_LIMIT ? 0 : row.gameId);
 };
 
 const part2 = (rawInput: string) => {
   const input = parseInput(rawInput);
   const rows = input.map(getRowMaxData);
-  const rowPowers = rows.map((row) => {
-    return (row.maxBlues || 1) * (row.maxGreens || 1) * (row.maxReds || 1);
-  });
 
-  const rowSums = rowPowers.reduce((t, r) => t + r, 0);
+  const rowPowers = rows.map(row => row.blues * row.greens * row.reds);
 
-  return rowSums;
+  return sum(rowPowers);
 };
 
 const input = `
@@ -56,6 +42,7 @@ Game 3: 8 green, 6 blue, 20 red; 5 blue, 4 red, 13 green; 5 green, 1 red
 Game 4: 1 green, 3 red, 6 blue; 3 green, 6 red; 3 green, 15 blue, 14 red
 Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green
 `;
+
 run({
   part1: {
     tests: [

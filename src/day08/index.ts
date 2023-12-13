@@ -1,4 +1,5 @@
 import run from "aocrunner";
+import { lcm } from 'mathjs';
 
 const parseInput = (rawInput: string) => rawInput.split('\n');
 
@@ -23,9 +24,6 @@ const parseLines = (lines: string[]): Record<string, [string, string]> => {
   }, {});
 }
 
-const greatestCommonDivisor = (a: number, b: number): number => a ? greatestCommonDivisor(b % a, a) : b;
-const leastCommonMultiple = (a: number, b: number): number => a * b / greatestCommonDivisor(a, b);
-
 const part1 = (rawInput: string) => {
   const input = parseInput(rawInput);
   const instructions = input[0].split('').map(i => Number(i !== "L"));
@@ -47,7 +45,7 @@ const part2 = (rawInput: string) => {
   const startingPoints = Object.keys(mappedLines).filter(l => l[2] === "A");
   const solves = startingPoints.map(point => solve(instructions, mappedLines, point, t => t[2] === "Z")!);
 
-  return solves.reduce(leastCommonMultiple);
+  return solves.reduce((t,n) => lcm(t,n), 1);
 };
 
 const input = `

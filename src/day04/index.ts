@@ -1,24 +1,22 @@
 import run from "aocrunner";
+import { intersect, sum, sumBy } from "../utils/index.js";
 
 const parseInput = (rawInput: string) => rawInput.split('\n').map(l => l.trim());
-const sumArrayItems = (array: number[]) => array.reduce((t, i) => t + i, 0);
 
 const parseLineMatches = (line: string) => {
-  const [winningNumbers, numbersYouHave] = line.replace(/Card\s+[0-9]+: /, '').split('|').map(l => l.trim().split(/\s+/g));
-  const matchingNumbers = [...new Set(numbersYouHave.filter(number => winningNumbers.includes(number)))];
-  return matchingNumbers.length;
+  const [winningNumbers, numbersYouHave] = line.split(':')[1].split('|').map(l => l.match(/\d+/g)!);
+  return intersect(winningNumbers, numbersYouHave).length;
 }
 
 const part1 = (rawInput: string) => {
   const lines = parseInput(rawInput);
-  let total = 0;
-  for (const line of lines) {
-    const matchingNumbers = parseLineMatches(line);
-    if (matchingNumbers === 0) continue;
 
-    total += Math.pow(2, matchingNumbers - 1);
-  }
-  return total;
+  return sumBy(lines, line => {
+    const matchingNumbers = parseLineMatches(line);
+    if (matchingNumbers === 0) return 0;
+
+    return Math.pow(2, matchingNumbers - 1);
+  });
 };
 
 /**
@@ -35,10 +33,9 @@ const part2 = (rawInput: string) => {
   for (let index = length - 1; index >= 0; index--) {
     const matches = parseLineMatches(lines[index]);
     const inverseIndex = length - index - 1;
-
     // Get resolved values of clones
     const slice = resolvedLines.slice(inverseIndex - matches, inverseIndex);
-    const resolution = sumArrayItems(slice) + 1;
+    const resolution = sum(slice) + 1;
     resolvedLines.push(resolution);
     total += resolution;
   }

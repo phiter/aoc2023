@@ -12,10 +12,9 @@ const getNextSequenceNumber = (history: number[]): number => {
     // Remove the last item (since it won't have a next element to subtract from)
     let lastItem = history.pop()!;
     const extract: number[] = [];
-    for (let idx in history) {
-        const index = Number(idx);
-        const next = history[index + 1] ?? lastItem;
-        const current = history[index];
+    for (let i = 0; i < history.length; i++) {
+        const next = history[i + 1] ?? lastItem;
+        const current = history[i];
         extract.push(next - current);
     }
 
