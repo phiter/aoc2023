@@ -23,7 +23,7 @@
 [![Day](https://badgen.net/badge/10/%E2%98%85%E2%98%85/green)](src/day10)
 [![Day](https://badgen.net/badge/11/%E2%98%85%E2%98%85/green)](src/day11)
 [![Day](https://badgen.net/badge/12/%E2%98%85%E2%98%85/green)](src/day12)
-![Day](https://badgen.net/badge/13/%E2%98%86%E2%98%86/gray)
+[![Day](https://badgen.net/badge/13/%E2%98%85%E2%98%85/green)](src/day13)
 ![Day](https://badgen.net/badge/14/%E2%98%86%E2%98%86/gray)
 ![Day](https://badgen.net/badge/15/%E2%98%86%E2%98%86/gray)
 ![Day](https://badgen.net/badge/16/%E2%98%86%E2%98%86/gray)
@@ -69,30 +69,30 @@ npm start 1
 
 ```
 Day 01
-Time part 1: 0.829ms
-Time part 2: 31.818ms
-Both parts: 32.647ms
+Time part 1: 0.814ms
+Time part 2: 2.24ms
+Both parts: 3.055ms
 ```
 
 ```
 Day 02
-Time part 1: 0.397ms
-Time part 2: 0.39ms
-Both parts: 0.786ms
+Time part 1: 0.763ms
+Time part 2: 0.464ms
+Both parts: 1.227ms
 ```
 
 ```
 Day 03
-Time part 1: 4.449ms
-Time part 2: 2.273ms
-Both parts: 6.722ms
+Time part 1: 3.976ms
+Time part 2: 2.285ms
+Both parts: 6.26ms
 ```
 
 ```
 Day 04
-Time part 1: 1.315ms
-Time part 2: 1.065ms
-Both parts: 2.38ms
+Time part 1: 0.897ms
+Time part 2: 0.968ms
+Both parts: 1.865ms
 ```
 
 ```
@@ -111,23 +111,23 @@ Both parts: 14.018ms
 
 ```
 Day 07
-Time part 1: 6.861ms
-Time part 2: 6.477ms
-Both parts: 13.339ms
+Time part 1: 3.682ms
+Time part 2: 3.429ms
+Both parts: 7.112ms
 ```
 
 ```
 Day 08
-Time part 1: 56.29ms
-Time part 2: 49.602ms
-Both parts: 105.892ms
+Time part 1: 52.169ms
+Time part 2: 46.797ms
+Both parts: 98.966ms
 ```
 
 ```
 Day 09
-Time part 1: 3.846ms
-Time part 2: 2.508ms
-Both parts: 6.354ms
+Time part 1: 4.834ms
+Time part 2: 4.29ms
+Both parts: 9.124ms
 ```
 
 ```
@@ -146,16 +146,16 @@ Both parts: 27.108ms
 
 ```
 Day 12
-Time part 1: 23.862ms
-Time part 2: 694.923ms
-Both parts: 718.786ms
+Time part 1: 23.577ms
+Time part 2: 609.919ms
+Both parts: 633.496ms
 ```
 
 ```
 Day 13
-Time part 1: -
-Time part 2: -
-Both parts: -
+Time part 1: 2.075ms
+Time part 2: 1.246ms
+Both parts: 3.321ms
 ```
 
 ```
@@ -243,8 +243,8 @@ Both parts: -
 ```
 
 ```
-Total stars: 24/50
-Total time: 17326225.895ms
+Total stars: 26/50
+Total time: 17326103.415ms
 ```
 
 <!--/RESULTS-->
